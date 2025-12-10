@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SparkConnect - Modern Dating App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <h1>Spark<span>Connect</span></h1>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span id="total-profiles">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <span id="total-matches">0</span>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="left-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    <div class="filter-option">
+                        <label>Age Range</label>
+                        <div class="range-slider">
+                            <input type="range" min="18" max="50" value="30" class="slider" id="age-range">
+                            <span id="age-value">18-30</span>
+                        </div>
+                    </div>
+                    <div class="filter-option">
+                        <label>Interests</label>
+                        <div class="interest-tags">
+                            <span class="tag">Travel</span>
+                            <span class="tag">Music</span>
+                            <span class="tag">Food</span>
+                            <span class="tag">Art</span>
+                            <span class="tag">Tech</span>
+                            <span class="tag">Fitness</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-fire"></i> Today's Matches</h3>
+                    <div class="matches-list" id="matches-list">
+                        <!-- Matches will be loaded here -->
+                        <p class="empty-message">No matches yet. Start swiping!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-content">
+                <!-- Profile Card -->
+                <div class="profile-card animate__animated" id="profile-card">
+                    <div class="profile-image-container">
+                        <img id="profile-image" src="" alt="Profile" class="profile-image">
+                        <div class="profile-badge" id="profile-badge">
+                            <i class="fas fa-star"></i> NEW
+                        </div>
+                        <div class="image-overlay"></div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <div class="profile-header">
+                            <h2 id="profile-name">Loading...</h2>
+                            <div class="profile-age" id="profile-age">...</div>
+                        </div>
+                        
+                        <div class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="profile-location">...</span>
+                        </div>
+                        
+                        <p class="profile-bio" id="profile-bio">
+                            Loading profile information...
+                        </p>
+                        
+                        <div class="interests-container">
+                            <h4>Interests</h4>
+                            <div class="interests-list" id="interests-list">
+                                <!-- Interests will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-dislike" id="dislike-btn">
+                            <i class="fas fa-times"></i> Pass
+                        </button>
+                        <button class="btn-superlike" id="superlike-btn">
+                            <i class="fas fa-star"></i> Super Like
+                        </button>
+                        <button class="btn-like" id="like-btn">
+                            <i class="fas fa-heart"></i> Like
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- No More Profiles Message -->
+                <div class="no-profiles" id="no-profiles" style="display: none;">
+                    <div class="empty-state">
+                        <i class="fas fa-heart-broken"></i>
+                        <h3>No more profiles to show</h3>
+                        <p>Check back later for new matches or adjust your filters.</p>
+                        <button class="btn-refresh" id="refresh-btn">
+                            <i class="fas fa-redo"></i> Refresh Profiles
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Match Notification -->
+                <div class="match-notification" id="match-notification">
+                    <div class="match-content">
+                        <div class="match-hearts">
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>It's a Match!</h3>
+                        <p id="match-message">You and <span id="match-name">Alex</span> have liked each other!</p>
+                        <div class="match-actions">
+                            <button class="btn-close-match" id="close-match-btn">Keep Swiping</button>
+                            <button class="btn-send-message">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-chart-line"></i> Your Stats</h3>
+                    <div class="stats-container">
+                        <div class="stat-circle">
+                            <div class="circle" id="match-rate-circle">
+                                <span id="match-rate">0%</span>
+                            </div>
+                            <p>Match Rate</p>
+                        </div>
+                        <div class="stat-item-right">
+                            <i class="fas fa-eye"></i>
+                            <div>
+                                <h4>Profile Views</h4>
+                                <p id="profile-views">24</p>
+                            </div>
+                        </div>
+                        <div class="stat-item-right">
+                            <i class="fas fa-comment-dots"></i>
+                            <div>
+                                <h4>Messages</h4>
+                                <p id="message-count">5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="quick-btn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="quick-btn">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                        <button class="quick-btn" id="view-matches-btn">
+                            <i class="fas fa-heart"></i> View All Matches
+                        </button>
+                        <button class="quick-btn">
+                            <i class="fas fa-question-circle"></i> Help
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Discover</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="nav-item" id="matches-nav">
+                    <i class="fas fa-heart"></i>
+                    <span>Matches</span>
+                    <span class="badge" id="matches-badge">0</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
